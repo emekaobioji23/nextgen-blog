@@ -1,4 +1,6 @@
 const User =require("../models/user");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 exports.getAllUsers = async (req, res, next) => {
     const users = await User.find();
     res.status(200).json({
@@ -23,8 +25,20 @@ exports.getAllUsers = async (req, res, next) => {
     }
   }
   exports.createUser=async (req, res) => {
-    console.log(req);
     const{body}=req;
+    const token = await jwt.sign(
+      {
+          username: body.username,
+          password: body.password,
+      },
+      process.env.SECRET_TOKEN,
+      {
+          expiresIn: "24h",
+      }
+    );
+    
+    //console.log(req);
+    body.token = token;
     await User.create(body);
     res.status(201).json({message:"Post request"});
   }
@@ -53,3 +67,23 @@ exports.getAllUsers = async (req, res, next) => {
     });
   
   }
+  exports.authenticateUser = async (req, res, next) => {
+    try {
+        const {body} = req;
+        const user = await User.findOne({username:body.username});
+         //req.user = user;
+        if(user.password === body.password){
+          return res.status(200).json({
+            message: "Authentication successful",
+          });
+        }else{
+            return res.status(403).json({
+                message: "Authentication not successful",
+              });
+        }
+    } catch (error) {
+        return res.status(404).json({
+            message: "User not found",
+          });
+    }
+  } 
