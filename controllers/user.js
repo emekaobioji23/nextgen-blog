@@ -26,19 +26,7 @@ exports.getAllUsers = async (req, res, next) => {
   }
   exports.createUser=async (req, res) => {
     const{body}=req;
-    const token = await jwt.sign(
-      {
-          username: body.username,
-          password: body.password,
-      },
-      process.env.SECRET_TOKEN,
-      {
-          expiresIn: "24h",
-      }
-    );
-    
     //console.log(req);
-    body.token = token;
     await User.create(body);
     res.status(201).json({message:"Post request"});
   }
@@ -73,7 +61,50 @@ exports.getAllUsers = async (req, res, next) => {
         const user = await User.findOne({username:body.username});
          //req.user = user;
         if(user.password === body.password){
-          return res.status(200).json({
+          const token = await jwt.sign(
+            {
+                username: body.username,
+                password: body.password,
+            },
+            process.env.SECRET_TOKEN,
+            {
+                expiresIn: "24h",
+            }
+          );
+          body["token"]=token;
+          return res.status(200).json({_id:user._id,token:token,
+            message: "Authentication successful",
+          });
+        }else{
+            return res.status(403).json({
+                message: "Authentication not successful",
+              });
+        }
+    } catch (error) {
+        return res.status(404).json({
+            message: "User not found",
+          });
+    }
+  } 
+  exports.validateUser = async (req, res, next) => {
+    try {
+        const {body} = req;
+        const user = await User.findOne({username:body.userId});
+         //req.user = user;
+         const token = await jwt.sign(
+          {
+              username: user.username,
+              password: user.password,
+          },
+          process.env.SECRET_TOKEN,
+          {
+              expiresIn: "24h",
+          }
+        );
+        if(user.password === body.password){
+          
+          body["token"]=token;
+          return res.status(200).json({username:body.username,token:token,
             message: "Authentication successful",
           });
         }else{

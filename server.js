@@ -1,7 +1,7 @@
 const app = require("./index.js");
 const port = 3000;
 //database connection
-const connectionString = "mongodb+srv://emekaobioji23:1nctamtw30pclut@emekaobiojicluster0.epxqrrm.mongodb.net/?retryWrites=true&w=majority&appName=emekaobiojicluster0"
+const connectionString = "mongodb+srv://emekaobioji23:m0ng0db@emekaobiojicluster0.epxqrrm.mongodb.net/?retryWrites=true&w=majority&appName=emekaobiojicluster0"
 const mongoose = require('mongoose');
 try {
   mongoose.connect(connectionString);

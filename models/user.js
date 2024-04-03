@@ -7,8 +7,7 @@ const userSchema = new Schema({
   firstname: String,
   lastname: String,
   hidden: Boolean,
-  role:String,
-  token:String
+  role:String
 });
 
 const User = model('User',userSchema);
