@@ -1,4 +1,4 @@
-const Blog =require("../models/blog");
+const Blog =require("../models/blog-model");
 exports.getAllBlogs = async (req, res, next) => {
     const blogs = await Blog.find();
     res.status(200).json({

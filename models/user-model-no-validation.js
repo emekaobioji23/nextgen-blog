@@ -1,4 +1,4 @@
-const { Schema,model } = require("mongoose");
+const {Schema, model,addon} = require('../utils/addon-schema')
 
 const userSchema = new Schema({
   username: String, // String is shorthand for {type: String}
@@ -7,8 +7,9 @@ const userSchema = new Schema({
   firstname: String,
   lastname: String,
   hidden: Boolean,
-  role:String
-});
+  role: String,
+  token: String
+}, {...addon});
 
-const User = model('User',userSchema);
+const User = model('User', userSchema);
 module.exports = User;

@@ -1,6 +1,6 @@
 const express = require('express');
 const { findBlogById, findBlogByIdAndUpdate, deleteBlogById, 
-    getAllBlogs, createBlog,findBlogByAuthor, findBlogByContent,isAuthorAuthorized} = require('../controllers/blog');
+    getAllBlogs, createBlog,findBlogByAuthor, findBlogByContent,isAuthorAuthorized} = require('../controllers/blog-controller');
 
 const router =express.Router();
 
